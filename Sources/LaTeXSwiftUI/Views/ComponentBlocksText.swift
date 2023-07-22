@@ -34,16 +34,11 @@ internal struct ComponentBlocksText: View {
   /// Whether inline mode should be forced.
   var forceInline: Bool = false
   
-  // MARK: Private properties
-  
-  /// The view's renderer.
-  @EnvironmentObject private var renderer: Renderer
-  
   // MARK: View body
   
   var body: some View {
     blocks.map { block in
-      let text = ComponentBlockText(block: block, renderer: renderer).body
+      let text = ComponentBlockText(block: block).body
       return block.isEquationBlock && !forceInline ?
       Text("\n") + text + Text("\n") :
       text
@@ -57,6 +52,5 @@ struct ComponentBlocksTextPreviews: PreviewProvider {
     ComponentBlocksText(blocks: [ComponentBlock(components: [
       Component(text: "Hello, World!", type: .text)
     ])], forceInline: false)
-    .environmentObject(Renderer(latex: "Hello, World!"))
   }
 }

@@ -1,5 +1,5 @@
 //
-//  CGRect+Extensions.swift
+//  ComponentBlock.swift
 //  LaTeXSwiftUI
 //
 //  Copyright (c) 2023 Colin Campbell
@@ -23,16 +23,33 @@
 //  IN THE SOFTWARE.
 //
 
-import CoreGraphics
 import Foundation
 
-extension CGRect: Hashable {
+/// A block of components.
+internal struct ComponentBlock: Hashable, Identifiable {
   
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine("x\(origin.x)")
-    hasher.combine("y\(origin.y)")
-    hasher.combine("w\(size.width)")
-    hasher.combine("h\(size.height)")
+  /// The component's identifier.
+  ///
+  /// Unique to every instance.
+  let id = UUID()
+  
+  /// The block's components.
+  let components: [Component]
+  
+  /// True iff this block has only one component and that component is
+  /// not inline.
+  var isEquationBlock: Bool {
+    components.count == 1 && !components[0].type.inline
+  }
+  
+  /// The SVG of the block's first component, if any.
+  var svg: SVG? {
+    components.first?.svg
+  }
+  
+  /// The image container of the block's first component, if any.
+  var container: ImageContainer? {
+    components.first?.imageContainer
   }
   
 }
